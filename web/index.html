@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>中国城市之旅 - 交互式中国行政区划地图与城市风物志</title>
+  
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  
+  <!-- Google Fonts: 思源宋体 / Noto Serif SC for classic publishing aesthetic -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
+
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 顶部典雅导航栏 -->
+  <header class="app-header">
+    <div class="header-left">
+      <div class="brand-logo">
+        <span class="logo-seal">邑</span>
+        <div class="brand-text">
+          <h1 class="brand-title">中国城市之旅</h1>
+          <span class="brand-subtitle">山川行迹 · 县域风物志</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 交互式面包屑导航 -->
+    <nav class="breadcrumb-nav" id="breadcrumbNav" aria-label="行政区划导航">
+      <button class="breadcrumb-item active" data-level="country">全国</button>
+      <span class="breadcrumb-separator" style="display:none;">›</span>
+      <button class="breadcrumb-item" id="bcProvince" data-level="province" style="display:none;"></button>
+      <span class="breadcrumb-separator" style="display:none;">›</span>
+      <button class="breadcrumb-item" id="bcCity" data-level="city" style="display:none;"></button>
+      <span class="breadcrumb-separator" style="display:none;">›</span>
+      <button class="breadcrumb-item" id="bcDistrict" data-level="district" style="display:none;"></button>
+    </nav>
+
+    <div class="header-right">
+      <!-- 搜索框 -->
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="searchInput" placeholder="搜索省份、城市、区县 (如: 襄阳、宜宾)..." autocomplete="off">
+        <div class="search-results" id="searchResults"></div>
+      </div>
+
+      <button class="btn-tool" id="btnResetView" title="重置回全国视图">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+          <path d="M3 3v5h5"></path>
+        </svg>
+        <span>全国视角</span>
+      </button>
+
+      <button class="btn-tool" id="btnAbout" title="关于本站">
+        <span>关于</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- 主体工作区：左侧地图 + 右侧图文抽屉 -->
+  <main class="app-main">
+    <!-- 左侧地图视口 -->
+    <section class="map-container" id="mapContainer">
+      <div id="map"></div>
+
+      <!-- 地图浮动工具与图例 -->
+      <div class="map-overlay-panel">
+        <div class="map-legend">
+          <div class="legend-header">图例 / 标注</div>
+          <div class="legend-item"><span class="legend-badge recorded-badge"></span> 已收录深度文稿城市</div>
+          <div class="legend-item"><span class="legend-line prov-line"></span> 省级行政边界</div>
+          <div class="legend-item"><span class="legend-line city-line"></span> 地级市边界</div>
+          <div class="legend-item"><span class="legend-line dist-line"></span> 县级行政边界</div>
+        </div>
+
+        <div class="map-stats" id="mapStats">
+          <span class="stat-pill">已收录城市: <b id="statRecordedCount">0</b></span>
+          <span class="stat-pill">下钻层级: <b id="statCurrentLevel">全国 (省级)</b></span>
+        </div>
+      </div>
+
+      <!-- 快速跳转收录城市浮窗 -->
+      <div class="quick-cities-panel" id="quickCitiesPanel">
+        <span class="quick-label">精选收录城市:</span>
+        <div class="quick-chips" id="quickChips"></div>
+      </div>
+    </section>
+
+    <!-- 右侧图文抽屉面板 -->
+    <aside class="drawer-panel" id="drawerPanel">
+      <button class="drawer-toggle" id="drawerToggle" title="折叠/展开抽屉">
+        <span class="toggle-icon">›</span>
+      </button>
+
+      <div class="drawer-inner" id="drawerContent">
+        <!-- 默认未选城市时的欢迎页引导 -->
+        <div class="drawer-welcome" id="drawerWelcome">
+          <div class="welcome-seal">华夏</div>
+          <h2>点击地图探索华夏风物</h2>
+          <p class="welcome-desc">
+            从宏伟的省级疆域，到地级坚城，再到微细的县域田园。<br>
+            点击地图上的任意省份下钻，选择城市即可阅读深度人文史地考述。
+          </p>
+
+          <div class="featured-list">
+            <h3>已入志文稿城市</h3>
+            <div class="featured-cards" id="featuredCards"></div>
+          </div>
+        </div>
+
+        <!-- 城市文稿详情容器 -->
+        <div class="drawer-article" id="drawerArticle" style="display:none;">
+          <!-- 文章顶部信息卡 -->
+          <div class="article-header">
+            <div class="article-meta-bar">
+              <span class="article-province" id="artProvince"></span>
+              <span class="article-status" id="artStatus">已收录</span>
+              <span class="article-adcode" id="artAdcode"></span>
+            </div>
+            <h2 class="article-title" id="artTitle"></h2>
+            <!-- 区县快捷跳转锚点胶囊 -->
+            <div class="districts-anchors" id="artAnchors"></div>
+          </div>
+
+          <!-- 城市引言综述 -->
+          <div class="article-intro" id="artIntro"></div>
+
+          <!-- 各区县章节卡片列表 -->
+          <div class="article-sections" id="artSections"></div>
+        </div>
+
+        <!-- 未收录城市/区县的通用百科占位卡 -->
+        <div class="drawer-placeholder" id="drawerPlaceholder" style="display:none;">
+          <div class="placeholder-icon">🗺️</div>
+          <h2 id="phName">城市名称</h2>
+          <div class="ph-meta">
+            <span class="ph-tag" id="phProvince">所属省份</span>
+            <span class="ph-tag" id="phCode">行政区划代码</span>
+          </div>
+          <div class="ph-box">
+            <h4>【作者采风录入中】</h4>
+            <p>该行政区划已纳入国家地名数据库，深度人文历史与县域风物特产正在整理编撰中。</p>
+            <div class="ph-sublist" id="phSubList"></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- 关于模态弹窗 -->
+  <div class="modal-overlay" id="aboutModal" style="display:none;">
+    <div class="modal-card">
+      <button class="modal-close" id="btnModalClose">&times;</button>
+      <div class="modal-header">
+        <span class="logo-seal">志</span>
+        <h3>关于《中国城市之旅》</h3>
+      </div>
+      <div class="modal-body">
+        <p><strong>《中国城市之旅》</strong> 是一套探索中国地理空间与人文历史风物的交互式数字化地图志。</p>
+        <h4>数据与技术体系：</h4>
+        <ul>
+          <li><strong>地理边界源</strong>：基于国家民政部与《AreaCity》全国三级（省、市、县）标准行政区划多边形数据。</li>
+          <li><strong>视觉风格</strong>：复刻典雅实体印刷挂图《县域地图.jpeg》审美，采用暖米色宣纸质感底色与低饱和莫兰迪行政分色体系。</li>
+          <li><strong>架构特性</strong>：纯静态零构建 Web 架构，支持省级、地级、县级无级平滑缩放与按需异步加载。</li>
+        </ul>
+        <p class="modal-footer-note">本项目代码支持直接部署至 GitHub Pages / Gitee Pages 托管平台。</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <!-- Main Application Script -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
