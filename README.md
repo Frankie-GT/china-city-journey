@@ -23,16 +23,10 @@
 
 ---
 
-## 🙏 致谢与鸣谢 (Acknowledgments)
+## 🙏 致谢与鸣谢
 
-本项目在开发与内容整理过程中，受益于以下优秀的开源项目、公共数据源与创作者，在此致以诚挚敬意：
-
-1. **地理与行政区划数据**：
-   - 感谢 [中华人民共和国民政部 · 国家地名信息库](https://dmfw.mca.gov.cn/) 提供的标准地名与行政区划规范。
-   - 感谢 [AreaCity-JsSpider-StatsGov](https://github.com/xiangyuecn/AreaCity-JsSpider-StatsGov) 提供的全国省市区县高精度行政边界矢量清洗与采集工具。
-2. **地图渲染引擎**：
-   - 感谢开源交互式地图引擎 [Leaflet](https://leafletjs.com/) 提供的轻量级制图支持。
-3. **灵感启迪**：
-   - 感谢 [MapStage](https://github.com/hopechen067/MapStage) 项目在地图交互与多级下钻探索上带来的灵感启迪。
-4. **城市文案与风貌参考（特别致谢）**：
-   - 本项目文稿中收录的部分城市文化脉络、历史演进及特色风貌，深度参考并取材于 **B 站人文地理 UP 主「老猫鱼不吃鱼」** 的系列优秀视频作品。特此向 UP 主严谨的地理考证与生动的人文文采致敬！
+- 感谢 [中华人民共和国民政部 · 国家地名信息库](https://dmfw.mca.gov.cn/) 提供的标准地名与行政区划规范。
+- 感谢 [AreaCity-JsSpider-StatsGov](https://github.com/xiangyuecn/AreaCity-JsSpider-StatsGov) 提供的全国省市区县高精度行政边界矢量清洗与采集工具。
+- 感谢开源交互式地图引擎 [Leaflet](https://leafletjs.com/) 提供的轻量级制图支持。
+- 感谢 [MapStage](https://github.com/hopechen067/MapStage) 项目在地图交互与多级下钻探索上带来的灵感启发。
+- 感谢 B 站 UP 主 [老猫鱼不吃鱼](https://space.bilibili.com/238365787) 的「快递里的中国」系列视频提供的创作动机。
