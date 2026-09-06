@@ -9,11 +9,18 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# 过滤大体积原始爬虫数据与地理源文件 (超过 GitHub 100MB 上传限制)
-AreaCity-JsSpider-StatsGov/ok_geo.csv/
-AreaCity-JsSpider-StatsGov/ok_data_level3-4.csv/ok_data_level4.csv
-ChinaAdminDivisonSHP/
-
-# 本地调试临时文件
+# 过滤大体积本地调试临时文件
 *.log
 web/data/temp/
+
+# 第三方参考开源项目与克隆子模块（不上传到公开仓库）
+AreaCity-JsSpider-StatsGov/
+ChinaAdminDivisonSHP/
+MapStage/
+china-geonames-skill/
+mcp-china-geonames-server/
+
+# 本地设计大图与参考指南
+县域地图.jpeg
+国家地名信息库 MCP & Skill 实现指南.md
+
