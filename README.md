@@ -19,39 +19,7 @@
 - 📱 **极致移动端自适应**：
   - 手机端采用轻量底部抽屉（Bottom Sheet）。
   - 默认保持折叠收起状态，留出纯粹的读图视野；仅在点击有文稿收录的区县时才智能弹出，掌上浏览极为舒适。
-- ⚡ **纯静态极简架构**：基于原生 HTML5 + CSS3 + ES6 + Leaflet 构建，无需 Webpack/Vite 繁琐打包构建，天然支持 GitHub Pages 极速免费托管。
-
----
-
-## 🚀 本地运行与体验
-
-在本地终端运行任意轻量 HTTP 服务器即可开启体验：
-
-```bash
-# 运行 Python 内置服务器托管 web 目录
-python3 -m http.server 8080 -d web
-```
-
-在浏览器中打开：**`http://localhost:8080`** 即可浏览。
-
----
-
-## 📂 仓库结构
-
-```text
-中国城市之旅/
-├── web/                           # 纯静态网站核心源码（GitHub Pages 部署发布目录）
-│   ├── index.html                 # 页面主入口
-│   ├── css/style.css              # 典雅出版物宣纸质感与响应式样式
-│   ├── js/app.js                  # 地图下钻、动态注记、邻界拓扑与交互逻辑
-│   └── data/                      # 预编译轻量矢量切片、文稿及搜索索引
-├── 文稿/                          # 城市原创风物志库（Markdown 格式）
-├── scripts/                       # 自动化文稿解析与拓扑计算轻量脚本
-├── ANTIGRAVITY.md                 # 开发者维护与 AI 协同开发指南
-└── .github/workflows/static.yml   # GitHub Pages 官方自动化部署工作流
-```
-
-> 💡 **开发者与日常维护**：关于如何添加新城市文稿、更新数据管线及地图样式设计规范，请查阅 [ANTIGRAVITY.md](ANTIGRAVITY.md)。
+- ⚡ **纯静态极简架构**：基于原生 HTML5 + CSS3 + ES6 + Leaflet 构建，无需打包编译，依托轻量分级切片实现丝滑浏览。
 
 ---
 
@@ -64,13 +32,7 @@ python3 -m http.server 8080 -d web
    - 感谢 [AreaCity-JsSpider-StatsGov](https://github.com/xiangyuecn/AreaCity-JsSpider-StatsGov) 提供的全国省市区县高精度行政边界矢量清洗与采集工具。
 2. **地图渲染引擎**：
    - 感谢开源交互式地图引擎 [Leaflet](https://leafletjs.com/) 提供的轻量级制图支持。
-3. **交互与灵感启发**：
-   - 感谢 [MapStage](https://github.com/xxxx/MapStage) 项目在地图多级下钻设计上带来的灵感启迪。
+3. **灵感启迪**：
+   - 感谢 [MapStage](https://github.com/hopechen067/MapStage) 项目在地图交互与多级下钻探索上带来的灵感启迪。
 4. **城市文案与风貌参考（特别致谢）**：
    - 本项目文稿中收录的部分城市文化脉络、历史演进及特色风貌，深度参考并取材于 **B 站人文地理 UP 主「老猫鱼不吃鱼」** 的系列优秀视频作品。特此向 UP 主严谨的地理考证与生动的人文文采致敬！
-
----
-
-## 📄 开源许可证
-
-本项目核心代码基于 [MIT License](LICENSE) 协议开源。文稿内容版权归原创作者所有。

@@ -24,3 +24,8 @@ mcp-china-geonames-server/
 县域地图.jpeg
 国家地名信息库 MCP & Skill 实现指南.md
 
+# 本地维护指南、原创文稿与数据处理脚本（仅本地保留，不发布至公开仓库）
+ANTIGRAVITY.md
+文稿/
+scripts/
+.agents/
